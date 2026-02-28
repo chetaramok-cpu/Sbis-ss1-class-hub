@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SS1 Class Hub 🎉</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #FF4D8D; --yellow: #FFD93D; --green: #6BCB77;
+    --blue: #4D96FF; --purple: #C77DFF; --orange: #FF9A3C;
+    --card-bg: rgba(15,15,40,0.82);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh; color: #fff; overflow-x: hidden;
+    background: linear-gradient(135deg,#ff0000,#ff7700,#ffff00,#00ff00,#0000ff,#8b00ff,#ff0000);
+    background-size: 400% 400%;
+    animation: rainbowShift 8s ease infinite;
+  }
+  @keyframes rainbowShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+  body::before {
+    content:''; position:fixed; inset:0;
+    background:rgba(0,0,0,0.45); pointer-events:none; z-index:0;
+  }
+  .content { position:relative; z-index:1; }
+
+  header { text-align:center; padding:40px 20px 20px; }
+  header h1 {
+    font-family:'Fredoka One',cursive; font-size:clamp(2.5rem,6vw,4rem);
+    background:linear-gradient(90deg,var(--pink),var(--yellow),var(--green),var(--blue));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    background-clip:text; letter-spacing:2px; animation:shimmer 3s infinite; background-size:200%;
+  }
+  @keyframes shimmer { 0%,100%{background-position:0%} 50%{background-position:100%} }
+  header p { color:rgba(255,255,255,0.6); font-size:1rem; margin-top:8px; }
+
+  .tabs { display:flex; justify-content:center; gap:10px; padding:20px; flex-wrap:wrap; }
+  .tab-btn {
+    background:rgba(255,255,255,0.08); border:2px solid rgba(255,255,255,0.15);
+    color:#fff; padding:10px 22px; border-radius:50px;
+    font-family:'Nunito',sans-serif; font-weight:700; font-size:0.95rem; cursor:pointer; transition:all 0.3s;
+  }
+  .tab-btn:hover { transform:translateY(-2px); }
+  .tab-btn.active { border-color:var(--yellow); background:rgba(255,217,61,0.2); color:var(--yellow); box-shadow:0 0 20px rgba(255,217,61,0.3); }
+
+  .section { display:none; padding:20px; max-width:900px; margin:0 auto; }
+  .section.active { display:block; animation:fadeIn 0.4s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+  .form-card { background:var(--card-bg); border:1px solid rgba(255,255,255,0.1); border-radius:20px; padding:30px; margin-bottom:20px; }
+  .form-card h2 { font-family:'Fredoka One',cursive; font-size:1.6rem; color:var(--green); margin-bottom:20px; }
+  .form-row { display:flex; gap:12px; flex-wrap:wrap; }
+  .form-row input {
+    flex:1; min-width:180px; background:rgba(255,255,255,0.07);
+    border:2px solid rgba(255,255,255,0.15); border-radius:12px;
+    padding:12px 16px; color:#fff; font-family:'Nunito',sans-serif; font-size:1rem; outline:none; transition:border-color 0.3s;
+  }
+  .form-row input:focus { border-color:var(--blue); }
+  .form-row input::placeholder { color:rgba(255,255,255,0.35); }
+  .btn { padding:12px 28px; border:none; border-radius:12px; font-family:'Fredoka One',cursive; font-size:1rem; cursor:pointer; transition:all 0.2s; letter-spacing:0.5px; }
+  .btn:hover { transform:translateY(-2px); filter:brightness(1.1); }
+  .btn:active { transform:scale(0.97); }
+  .btn-green { background:var(--green); color:#0D0D2B; }
+  .btn-pink { background:var(--pink); color:#fff; }
+  .btn-blue { background:var(--blue); color:#fff; }
+  .btn-orange { background:var(--orange); color:#fff; }
+  .btn-purple { background:var(--purple); color:#fff; }
+
+  .search-bar {
+    width:100%; background:rgba(255,255,255,0.07); border:2px solid rgba(255,255,255,0.15);
+    border-radius:50px; padding:14px 24px; color:#fff; font-family:'Nunito',sans-serif;
+    font-size:1rem; outline:none; margin-bottom:20px; transition:border-color 0.3s;
+  }
+  .search-bar:focus { border-color:var(--blue); }
+  .search-bar::placeholder { color:rgba(255,255,255,0.35); }
+
+  .members-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:16px; }
+  .member-card {
+    background:var(--card-bg); border-radius:16px; padding:20px; text-align:center;
+    border:2px solid transparent; transition:all 0.3s; position:relative; overflow:hidden; animation:popIn 0.4s ease;
+  }
+  @keyframes popIn { from{opacity:0;transform:scale(0.8)} to{opacity:1;transform:scale(1)} }
+  .member-card:hover { transform:translateY(-5px); box-shadow:0 15px 40px rgba(0,0,0,0.3); }
+  .member-card .avatar { width:64px; height:64px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Fredoka One',cursive; font-size:1.6rem; margin:0 auto 12px; color:#0D0D2B; }
+  .member-card .name { font-weight:800; font-size:1rem; margin-bottom:4px; }
+  .member-card .number { font-size:0.85rem; color:rgba(255,255,255,0.5); }
+  .member-card .num-badge { position:absolute; top:10px; right:10px; background:rgba(255,255,255,0.1); border-radius:8px; padding:2px 8px; font-size:0.75rem; font-weight:700; }
+  .member-card .del-btn { margin-top:10px; background:rgba(255,77,141,0.15); border:1px solid rgba(255,77,141,0.3); color:var(--pink); border-radius:8px; padding:4px 12px; font-size:0.75rem; cursor:pointer; font-family:'Nunito',sans-serif; font-weight:700; transition:all 0.2s; }
+  .member-card .del-btn:hover { background:rgba(255,77,141,0.3); }
+
+  .empty-state { text-align:center; padding:60px 20px; color:rgba(255,255,255,0.3); }
+  .empty-state .emoji { font-size:4rem; display:block; margin-bottom:16px; }
+
+  /* WHEEL */
+  .wheel-container { display:flex; flex-direction:column; align-items:center; gap:24px; }
+  #wheelCanvas { max-width:340px; width:100%; border-radius:50%; box-shadow:0 0 40px rgba(77,150,255,0.4); }
+  .wheel-result { font-family:'Fredoka One',cursive; font-size:1.8rem; text-align:center; min-height:60px; color:var(--yellow); text-shadow:0 0 20px rgba(255,217,61,0.5); animation:pulse 1s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.7} }
+  .wheel-result.stopped { animation:none; }
+  #spinBtn { padding:16px 48px; font-size:1.2rem; }
+
+  /* LEADERBOARD */
+  .vote-section { margin-bottom:30px; }
+  .vote-section h3 { font-family:'Fredoka One',cursive; font-size:1.3rem; color:var(--purple); margin-bottom:14px; }
+  .vote-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:10px; }
+  .vote-card { background:var(--card-bg); border-radius:14px; padding:14px; display:flex; align-items:center; gap:10px; border:2px solid rgba(255,255,255,0.08); transition:all 0.3s; }
+  .vote-card:hover { border-color:rgba(255,255,255,0.2); }
+  .vote-card .v-name { flex:1; font-weight:700; font-size:0.9rem; }
+  .vote-card .v-count { font-family:'Fredoka One',cursive; font-size:1.3rem; color:var(--yellow); min-width:24px; text-align:center; }
+  .vote-card .v-btn { background:rgba(199,125,255,0.2); border:1px solid rgba(199,125,255,0.4); color:var(--purple); border-radius:8px; padding:4px 10px; cursor:pointer; font-size:1rem; font-weight:700; transition:all 0.2s; }
+  .vote-card .v-btn:hover { background:rgba(199,125,255,0.4); transform:scale(1.1); }
+  .leaderboard-list { list-style:none; }
+  .lb-item { display:flex; align-items:center; gap:14px; background:var(--card-bg); border-radius:14px; padding:14px 18px; margin-bottom:10px; border:2px solid rgba(255,255,255,0.07); transition:all 0.3s; }
+  .lb-item:hover { border-color:rgba(255,255,255,0.15); transform:translateX(4px); }
+  .lb-rank { font-family:'Fredoka One',cursive; font-size:1.5rem; width:36px; text-align:center; }
+  .rank-1{color:#FFD700} .rank-2{color:#C0C0C0} .rank-3{color:#CD7F32}
+  .lb-item .v-name { flex:1; font-weight:700; }
+  .lb-item .votes-bar-wrap { width:120px; height:8px; background:rgba(255,255,255,0.1); border-radius:4px; overflow:hidden; }
+  .lb-item .votes-bar { height:100%; background:linear-gradient(90deg,var(--purple),var(--pink)); border-radius:4px; transition:width 0.5s; }
+  .lb-item .v-count { font-family:'Fredoka One',cursive; color:var(--yellow); font-size:1.1rem; min-width:30px; text-align:right; }
+  .stats-bar { display:flex; gap:14px; margin-bottom:20px; flex-wrap:wrap; }
+  .stat-chip { background:var(--card-bg); border-radius:12px; padding:10px 18px; font-weight:700; font-size:0.9rem; border:1px solid rgba(255,255,255,0.1); }
+  .stat-chip span { color:var(--yellow); font-family:'Fredoka One',cursive; font-size:1.1rem; margin-left:4px; }
+
+  /* ── CHAT ── */
+  #tab-chat { max-width:700px; }
+  .chat-header { background:var(--card-bg); border-radius:20px 20px 0 0; padding:18px 24px; border:1px solid rgba(255,255,255,0.1); border-bottom:none; display:flex; align-items:center; gap:12px; }
+  .chat-header h2 { font-family:'Fredoka One',cursive; font-size:1.5rem; color:var(--green); }
+  .chat-online { font-size:0.8rem; color:var(--green); background:rgba(107,203,119,0.15); border-radius:20px; padding:4px 12px; margin-left:auto; }
+
+  .chat-box {
+    background:var(--card-bg); border:1px solid rgba(255,255,255,0.1);
+    border-top:none; border-bottom:none;
+    height:420px; overflow-y:auto; padding:16px;
+    display:flex; flex-direction:column; gap:10px;
+    scroll-behavior:smooth;
+  }
+  .chat-box::-webkit-scrollbar { width:5px; }
+  .chat-box::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.15); border-radius:4px; }
+
+  .chat-msg { display:flex; gap:10px; animation:msgPop 0.3s ease; max-width:85%; }
+  @keyframes msgPop { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  .chat-msg.mine { align-self:flex-end; flex-direction:row-reverse; }
+  .chat-msg .msg-avatar { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Fredoka One',cursive; font-size:0.9rem; flex-shrink:0; color:#0D0D2B; }
+  .chat-msg .msg-body { display:flex; flex-direction:column; gap:3px; }
+  .chat-msg .msg-name { font-size:0.75rem; font-weight:700; color:rgba(255,255,255,0.5); }
+  .chat-msg.mine .msg-name { text-align:right; }
+  .chat-msg .msg-bubble { background:rgba(255,255,255,0.1); border-radius:16px; padding:10px 14px; font-size:0.95rem; line-height:1.4; word-break:break-word; }
+  .chat-msg.mine .msg-bubble { background:rgba(77,150,255,0.3); border:1px solid rgba(77,150,255,0.4); }
+  .chat-msg .msg-time { font-size:0.7rem; color:rgba(255,255,255,0.3); }
+  .chat-msg.mine .msg-time { text-align:right; }
+
+  .chat-system { text-align:center; font-size:0.8rem; color:rgba(255,255,255,0.3); padding:4px 0; }
+
+  .chat-input-row {
+    background:var(--card-bg); border:1px solid rgba(255,255,255,0.1);
+    border-top:1px solid rgba(255,255,255,0.08);
+    border-radius:0 0 20px 20px;
+    padding:14px 16px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+  }
+  .chat-name-select {
+    background:rgba(255,255,255,0.07); border:2px solid rgba(255,255,255,0.15);
+    border-radius:10px; padding:10px 14px; color:#fff;
+    font-family:'Nunito',sans-serif; font-size:0.9rem; outline:none;
+    max-width:160px; flex-shrink:0;
+  }
+  .chat-name-select option { background:#1a1a3e; }
+  .chat-name-select:focus { border-color:var(--blue); }
+  #chat-inp {
+    flex:1; background:rgba(255,255,255,0.07); border:2px solid rgba(255,255,255,0.15);
+    border-radius:12px; padding:10px 16px; color:#fff; font-family:'Nunito',sans-serif;
+    font-size:0.95rem; outline:none; min-width:120px; transition:border-color 0.3s;
+  }
+  #chat-inp:focus { border-color:var(--blue); }
+  #chat-inp::placeholder { color:rgba(255,255,255,0.3); }
+  #send-btn { padding:10px 22px; font-size:1rem; flex-shrink:0; }
+
+  .emoji-bar { width:100%; display:flex; gap:6px; flex-wrap:wrap; }
+  .emoji-btn { background:none; border:none; font-size:1.3rem; cursor:pointer; transition:transform 0.2s; }
+  .emoji-btn:hover { transform:scale(1.3); }
+
+  /* confetti */
+  .confetti-piece { position:fixed; width:10px; height:10px; top:-20px; border-radius:2px; animation:confettiFall linear forwards; pointer-events:none; z-index:9999; }
+  @keyframes confettiFall { to{transform:translateY(110vh) rotate(720deg);opacity:0} }
+
+  footer { text-align:center; padding:30px; color:rgba(255,255,255,0.25); font-size:0.85rem; }
+</style>
+</head>
+<body>
+<div class="content">
+  <header>
+    <h1>🎓 SS1 CLASS HUB 🎉</h1>
+    <p>Your class, your vibe — all in one place!</p>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('add',this)">➕ Add Members</button>
+    <button class="tab-btn" onclick="showTab('members',this)">👥 All Members</button>
+    <button class="tab-btn" onclick="showTab('wheel',this)">🎡 Spin Wheel</button>
+    <button class="tab-btn" onclick="showTab('leaderboard',this)">🏆 Leaderboard</button>
+    <button class="tab-btn" onclick="showTab('chat',this)">💬 Class Chat</button>
+  </div>
+
+  <!-- ADD -->
+  <div class="section active" id="tab-add">
+    <div class="form-card">
+      <h2>➕ Add a Class Member</h2>
+      <div class="form-row">
+        <input type="text" id="inp-name" placeholder="Full Name (e.g. Amara Obi)" maxlength="40"/>
+        <input type="text" id="inp-number" placeholder="Phone Number" maxlength="15"/>
+        <button class="btn btn-green" onclick="addMember()">Add Member 🎉</button>
+      </div>
+      <div id="add-msg" style="margin-top:12px;font-weight:700;min-height:20px;"></div>
+    </div>
+    <div class="form-card">
+      <h2>📋 Quick Bulk Add</h2>
+      <p style="color:rgba(255,255,255,0.5);font-size:0.9rem;margin-bottom:12px;">Paste names and numbers, one per line: <em>Name, Number</em></p>
+      <textarea id="bulk-input" placeholder="Amara Obi, 08012345678&#10;Chidi Eze, 08098765432&#10;Fatima Musa, 09011112222" style="width:100%;height:120px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,255,255,0.15);border-radius:12px;padding:14px;color:#fff;font-family:'Nunito',sans-serif;font-size:0.95rem;outline:none;resize:vertical;"></textarea>
+      <div style="margin-top:12px;"><button class="btn btn-blue" onclick="bulkAdd()">Bulk Add 🚀</button></div>
+      <div id="bulk-msg" style="margin-top:12px;font-weight:700;min-height:20px;"></div>
+    </div>
+  </div>
+
+  <!-- MEMBERS -->
+  <div class="section" id="tab-members">
+    <div class="stats-bar" id="members-stats"></div>
+    <input class="search-bar" type="text" id="search-inp" placeholder="🔍 Search by name or number..." oninput="renderMembers()"/>
+    <div class="members-grid" id="members-grid"></div>
+  </div>
+
+  <!-- WHEEL -->
+  <div class="section" id="tab-wheel">
+    <div class="wheel-container">
+      <p style="color:rgba(255,255,255,0.5);text-align:center;">Add members first, then spin to randomly pick someone!</p>
+      <canvas id="wheelCanvas" width="340" height="340"></canvas>
+      <div class="wheel-result stopped" id="wheel-result">🎡 Ready to spin!</div>
+      <button class="btn btn-orange" id="spinBtn" onclick="spinWheel()">SPIN! 🎲</button>
+    </div>
+  </div>
+
+  <!-- LEADERBOARD -->
+  <div class="section" id="tab-leaderboard">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex-wrap:wrap;">
+      <div>
+        <div class="vote-section">
+          <h3>👍 Vote for Class Favorite</h3>
+          <p style="color:rgba(255,255,255,0.4);font-size:0.85rem;margin-bottom:14px;">Tap ❤️ to vote!</p>
+          <div class="vote-grid" id="vote-grid"></div>
+        </div>
+      </div>
+      <div>
+        <div class="vote-section">
+          <h3>🏆 Top Members</h3>
+          <ul class="leaderboard-list" id="lb-list"></ul>
+          <button class="btn btn-pink" onclick="resetVotes()" style="margin-top:10px;font-size:0.85rem;padding:8px 18px;">Reset Votes 🔄</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAT -->
+  <div class="section" id="tab-chat">
+    <div class="chat-header">
+      <span style="font-size:1.6rem">💬</span>
+      <h2>Class Chat</h2>
+      <span class="chat-online" id="chat-online">● Live</span>
+    </div>
+    <div class="chat-box" id="chat-box">
+      <div class="chat-system">👋 Welcome to SS1 Class Chat! Say hello!</div>
+    </div>
+    <div class="chat-input-row">
+      <select class="chat-name-select" id="chat-sender">
+        <option value="">— Pick your name —</option>
+      </select>
+      <input id="chat-inp" placeholder="Type a message..." maxlength="300" onkeydown="if(event.key==='Enter')sendMsg()"/>
+      <button class="btn btn-blue" id="send-btn" onclick="sendMsg()">Send 📨</button>
+      <div class="emoji-bar">
+        <button class="emoji-btn" onclick="addEmoji('😂')">😂</button>
+        <button class="emoji-btn" onclick="addEmoji('🔥')">🔥</button>
+        <button class="emoji-btn" onclick="addEmoji('❤️')">❤️</button>
+        <button class="emoji-btn" onclick="addEmoji('🎉')">🎉</button>
+        <button class="emoji-btn" onclick="addEmoji('😭')">😭</button>
+        <button class="emoji-btn" onclick="addEmoji('💀')">💀</button>
+        <button class="emoji-btn" onclick="addEmoji('🙏')">🙏</button>
+        <button class="emoji-btn" onclick="addEmoji('👀')">👀</button>
+        <button class="emoji-btn" onclick="addEmoji('😍')">😍</button>
+        <button class="emoji-btn" onclick="addEmoji('🤣')">🤣</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>Made with ❤️ for SS1 Class • <span id="member-count-footer">0</span> members</footer>
+</div>
+
+<script>
+const COLORS = ['#FF4D8D','#FFD93D','#6BCB77','#4D96FF','#C77DFF','#FF9A3C','#00D4FF','#FF6B6B'];
+
+let members = JSON.parse(localStorage.getItem('ss1_members')||'[]');
+let votes   = JSON.parse(localStorage.getItem('ss1_votes')||'{}');
+let messages= JSON.parse(localStorage.getItem('ss1_chat')||'[]');
+
+function save() {
+  localStorage.setItem('ss1_members', JSON.stringify(members));
+  localStorage.setItem('ss1_votes',   JSON.stringify(votes));
+  localStorage.setItem('ss1_chat',    JSON.stringify(messages));
+}
+
+function getInitials(n){ return n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2); }
+function getColor(n){ let s=0; for(let c of n) s+=c.charCodeAt(0); return COLORS[s%COLORS.length]; }
+
+function showTab(tab, btn) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  btn.classList.add('active');
+  if(tab==='members') renderMembers();
+  if(tab==='wheel') drawWheel();
+  if(tab==='leaderboard') renderLeaderboard();
+  if(tab==='chat') { renderChatSenderSelect(); renderChat(true); }
+}
+
+/* ── MEMBERS ── */
+function addMember(nameVal, numVal, silent) {
+  const name   = (nameVal || document.getElementById('inp-name').value.trim());
+  const number = (numVal  || document.getElementById('inp-number').value.trim());
+  if(!name){ if(!silent) showMsg('add-msg','⚠️ Please enter a name!','var(--orange)'); return false; }
+  if(members.find(m=>m.name.toLowerCase()===name.toLowerCase())){ if(!silent) showMsg('add-msg','⚠️ '+name+' already added!','var(--pink)'); return false; }
+  const m = { id: Date.now()+Math.random()+'', name, number: number||'No number' };
+  members.push(m);
+  if(!votes[m.id]) votes[m.id]=0;
+  save();
+  if(!silent){
+    document.getElementById('inp-name').value='';
+    document.getElementById('inp-number').value='';
+    showMsg('add-msg','✅ '+name+' added!','var(--green)');
+    confetti();
+  }
+  updateFooter(); renderChatSenderSelect(); return true;
+}
+
+function bulkAdd(){
+  const lines=document.getElementById('bulk-input').value.trim().split('\n');
+  let added=0, skipped=0;
+  for(let l of lines){ const p=l.split(','); const n=p[0]?.trim(); const num=p[1]?.trim()||''; if(n){ addMember(n,num,true)?added++:skipped++; } }
+  document.getElementById('bulk-input').value='';
+  showMsg('bulk-msg',`✅ Added ${added}${skipped?', skipped '+skipped+' duplicates':''}!`,'var(--green)');
+  if(added>0) confetti();
+  updateFooter();
+}
+
+function showMsg(id,text,color){ const el=document.getElementById(id); el.textContent=text; el.style.color=color; setTimeout(()=>el.textContent='',3000); }
+
+function deleteMember(id){
+  if(!confirm('Remove this member?')) return;
+  members=members.filter(m=>m.id!==id); delete votes[id]; save(); renderMembers(); updateFooter();
+}
+
+function renderMembers(){
+  const q=document.getElementById('search-inp').value.toLowerCase();
+  const filtered=members.filter(m=>m.name.toLowerCase().includes(q)||m.number.includes(q));
+  const grid=document.getElementById('members-grid');
+  document.getElementById('members-stats').innerHTML=`<div class="stat-chip">Total <span>${members.length}</span></div>${q?`<div class="stat-chip">Results <span>${filtered.length}</span></div>`:''}`;
+  if(!members.length){ grid.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><span class="emoji">👥</span>No members yet!</div>`; return; }
+  if(!filtered.length){ grid.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><span class="emoji">🔍</span>No results.</div>`; return; }
+  grid.innerHTML=filtered.map(m=>`
+    <div class="member-card" style="border-color:${getColor(m.name)}33">
+      <span class="num-badge">#${members.indexOf(m)+1}</span>
+      <div class="avatar" style="background:${getColor(m.name)}">${getInitials(m.name)}</div>
+      <div class="name">${m.name}</div>
+      <div class="number">📱 ${m.number}</div>
+      <button class="del-btn" onclick="deleteMember('${m.id}')">Remove ✕</button>
+    </div>`).join('');
+}
+
+/* ── WHEEL ── */
+let spinning=false, currentAngle=0;
+function drawWheel(highlight){
+  const canvas=document.getElementById('wheelCanvas');
+  const ctx=canvas.getContext('2d');
+  const cx=canvas.width/2, cy=canvas.height/2, r=cx-10;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  if(!members.length){ ctx.fillStyle='rgba(255,255,255,0.1)'; ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.fill(); ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.font='bold 16px Nunito'; ctx.textAlign='center'; ctx.fillText('Add members first!',cx,cy); return; }
+  const n=members.length, arc=(Math.PI*2)/n;
+  members.forEach((m,i)=>{ const s=currentAngle+i*arc, e=s+arc; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,r,s,e); ctx.fillStyle=i===highlight?'#fff':COLORS[i%COLORS.length]; ctx.fill(); ctx.strokeStyle='#0D0D2B'; ctx.lineWidth=2; ctx.stroke(); ctx.save(); ctx.translate(cx,cy); ctx.rotate(s+arc/2); ctx.textAlign='right'; ctx.fillStyle='#0D0D2B'; ctx.font=`bold ${Math.max(10,Math.min(14,200/n))}px Nunito`; const txt=m.name.length>12?m.name.slice(0,11)+'…':m.name; ctx.fillText(txt,r-12,5); ctx.restore(); });
+  ctx.beginPath(); ctx.arc(cx,cy,24,0,Math.PI*2); ctx.fillStyle='#0D0D2B'; ctx.fill(); ctx.strokeStyle='#fff'; ctx.lineWidth=3; ctx.stroke(); ctx.fillStyle='#fff'; ctx.font='bold 14px Fredoka One'; ctx.textAlign='center'; ctx.fillText('SS1',cx,cy+5);
+  ctx.beginPath(); ctx.moveTo(cx+r-5,cy); ctx.lineTo(cx+r+20,cy-10); ctx.lineTo(cx+r+20,cy+10); ctx.fillStyle='#FFD93D'; ctx.fill();
+}
+function spinWheel(){
+  if(spinning||!members.length) return;
+  spinning=true; document.getElementById('spinBtn').disabled=true;
+  document.getElementById('wheel-result').textContent='🎡 Spinning...'; document.getElementById('wheel-result').classList.remove('stopped');
+  const total=(Math.floor(Math.random()*5)+5)*Math.PI*2, dur=4000, start=performance.now(), startA=currentAngle;
+  function animate(now){ const el=Math.min((now-start)/dur,1), ease=1-Math.pow(1-el,4); currentAngle=startA+total*ease; drawWheel(); if(el<1){requestAnimationFrame(animate);}else{ const arc=(Math.PI*2)/members.length, norm=(((-currentAngle)%(Math.PI*2))+(Math.PI*2))%(Math.PI*2), wi=Math.floor(norm/arc)%members.length; drawWheel(wi); document.getElementById('wheel-result').textContent='🎉 '+members[wi].name+'!'; document.getElementById('wheel-result').classList.add('stopped'); spinning=false; document.getElementById('spinBtn').disabled=false; confetti(); } }
+  requestAnimationFrame(animate);
+}
+
+/* ── LEADERBOARD ── */
+function renderLeaderboard(){
+  const vg=document.getElementById('vote-grid'), lb=document.getElementById('lb-list');
+  if(!members.length){ vg.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><span class="emoji">🏆</span>Add members first!</div>`; lb.innerHTML=''; return; }
+  members.forEach(m=>{ if(!votes[m.id]) votes[m.id]=0; });
+  vg.innerHTML=members.map(m=>`<div class="vote-card"><div class="v-name">${m.name}</div><button class="v-btn" onclick="vote('${m.id}')">❤️</button><div class="v-count">${votes[m.id]||0}</div></div>`).join('');
+  const sorted=[...members].sort((a,b)=>(votes[b.id]||0)-(votes[a.id]||0));
+  const maxV=votes[sorted[0]?.id]||1;
+  lb.innerHTML=sorted.map((m,i)=>`<li class="lb-item"><span class="lb-rank ${i<3?'rank-'+(i+1):''}">${i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1)}</span><span class="v-name">${m.name}</span><div class="votes-bar-wrap"><div class="votes-bar" style="width:${((votes[m.id]||0)/maxV*100)}%"></div></div><span class="v-count">${votes[m.id]||0}</span></li>`).join('');
+}
+function vote(id){ if(!votes[id]) votes[id]=0; votes[id]++; save(); renderLeaderboard(); }
+function resetVotes(){ if(!confirm('Reset all votes?')) return; members.forEach(m=>votes[m.id]=0); save(); renderLeaderboard(); }
+
+/* ── CHAT ── */
+function renderChatSenderSelect(){
+  const sel=document.getElementById('chat-sender');
+  const cur=sel.value;
+  sel.innerHTML='<option value="">— Pick your name —</option>';
+  members.forEach(m=>{ const o=document.createElement('option'); o.value=m.id; o.textContent=m.name; sel.appendChild(o); });
+  if(cur) sel.value=cur;
+}
+
+function sendMsg(){
+  const sel=document.getElementById('chat-sender');
+  const inp=document.getElementById('chat-inp');
+  const senderId=sel.value, text=inp.value.trim();
+  if(!senderId){ alert('Please pick your name first!'); return; }
+  if(!text) return;
+  const sender=members.find(m=>m.id===senderId);
+  if(!sender) return;
+  const msg={ id: Date.now()+'', senderId, name: sender.name, text, time: new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}) };
+  messages.push(msg);
+  if(messages.length>200) messages=messages.slice(-200);
+  save();
+  inp.value='';
+  renderChat(true);
+}
+
+function addEmoji(e){ document.getElementById('chat-inp').value+=e; document.getElementById('chat-inp').focus(); }
+
+function clearChat(){
+  if(!confirm('Clear all chat messages?')) return;
+  messages=[]; save(); renderChat(false);
+}
+
+function renderChat(scroll){
+  const box=document.getElementById('chat-box');
+  const sel=document.getElementById('chat-sender');
+  const myId=sel.value;
+  if(!messages.length){ box.innerHTML='<div class="chat-system">👋 Welcome to SS1 Class Chat! Say hello!</div>'; return; }
+  box.innerHTML=messages.map(m=>{
+    const mine=m.senderId===myId;
+    const color=getColor(m.name);
+    return `<div class="chat-msg ${mine?'mine':''}">
+      <div class="msg-avatar" style="background:${color}">${getInitials(m.name)}</div>
+      <div class="msg-body">
+        ${!mine?`<div class="msg-name">${m.name}</div>`:''}
+        <div class="msg-bubble">${escHtml(m.text)}</div>
+        <div class="msg-time">${m.time}</div>
+      </div>
+    </div>`;
+  }).join('')+'<div id="chat-end"></div>';
+  if(scroll) document.getElementById('chat-end')?.scrollIntoView({behavior:'smooth'});
+}
+
+function escHtml(t){ return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* ── UTILS ── */
+function confetti(){
+  for(let i=0;i<30;i++){ const el=document.createElement('div'); el.className='confetti-piece'; el.style.cssText=`left:${Math.random()*100}vw;background:${COLORS[Math.floor(Math.random()*COLORS.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${1.5+Math.random()*2}s;animation-delay:${Math.random()*0.5}s;`; document.body.appendChild(el); setTimeout(()=>el.remove(),3500); }
+}
+function updateFooter(){ document.getElementById('member-count-footer').textContent=members.length; }
+
+// Init
+updateFooter(); drawWheel(); renderChatSenderSelect();
+</script>
+</body>
+</html>
